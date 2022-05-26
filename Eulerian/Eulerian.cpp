@@ -6,6 +6,7 @@
 class Graph
 {
 	int vertices; std::list<int>* adj;
+	int edges = 0;
 
 public:
 	Graph(int size)
@@ -21,7 +22,8 @@ public:
 	void addNode(int a, int b);
 	bool eulerian();
 	bool connected();
-	int traversal(bool* checked, int i);
+	void traversal(bool* checked, int i);
+	void traversalEul(int i);
 };
 
 Graph::~Graph()
@@ -58,6 +60,7 @@ void Graph::addNode(int a, int b)
 {
 	adj[a].push_back(b);
 	adj[b].push_back(a);
+	edges++;
 }
 
 bool Graph::eulerian()
@@ -90,7 +93,7 @@ bool Graph::connected()
 
 	for (mark; mark < vertices; mark++)
 	{
-		checked = false;
+		checked[mark] = false;
 	}
 
 	for (mark = 0; mark < vertices; mark++)
@@ -113,7 +116,7 @@ bool Graph::connected()
 	return true;
 }
 
-int Graph::traversal(bool* checked, int n)
+void Graph::traversal(bool* checked, int n)
 {
 	checked[n] = true;
 	
@@ -158,7 +161,10 @@ int main()
 	matrixFill(myGraph);
 	myGraph.print();
 
-	myGraph.eulerian();
+	if(myGraph.eulerian())
+		std::cout<<"The graph has eulirian circle.\n";
+	else
+		std::cout<<"The graph does not have eulirian circle.\n";
 
 	return 0;
 }
